@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year 2026 Prank</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        /* Video Page */
+        #video-page {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #glitter-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Fake Restart Screen */
+        #restart-page {
+            display: none;
+            background: #00008b;
+            color: #fff;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+            font-size: 1.6em;
+            box-sizing: border-box;
+        }
+        #restart-page .smile {
+            font-size: 5em;
+            margin-bottom: 40px;
+            opacity: 0.8;
+        }
+        #restart-page p {
+            margin: 15px 0;
+            max-width: 800px;
+        }
+
+        /* Final Happy New Year Page */
+        #final-page {
+            display: none;
+            background: linear-gradient(to bottom, #0f001f, #000428);
+            color: gold;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+        #final-page h1 {
+            font-size: 6em;
+            margin: 0;
+            text-shadow: 0 0 30px gold, 0 0 50px orange;
+            animation: glow 2s infinite alternate;
+        }
+        #final-page .emojis {
+            font-size: 4em;
+            margin: 30px 0;
+        }
+        #final-page .success-msg {
+            font-size: 2.8em;
+            font-weight: bold;
+            color: #ffeb3b;
+            text-shadow: 0 0 20px #fff;
+        }
+        #final-page p {
+            font-size: 2.2em;
+            margin: 20px;
+            max-width: 900px;
+        }
+/* Final Video Page - Pure video only */
+        #final-page {
+            display: none;
+            height: 100vh;
+            width: 100vw;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #video2 {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 20px gold; }
+            to { text-shadow: 0 0 60px orange, 0 0 80px red; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Your Video: video1.mp4 plays immediately -->
+    <div id="video-page">
+        <video id="glitter-video" autoplay muted playsinline>
+            <source src="video1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <!-- Fake Restart Screen -->
+    <div id="restart-page">
+        <div class="smile">:)</div>
+        <p>Your system has encountered a critical error and needs to restart.</p>
+        <p>We're collecting some error info, and then we'll restart for you.</p>
+        <br>
+        <p><strong>Press any key to continue...</strong></p>
+    </div>
+
+    <!-- Final Reveal: Pure video2.mp4 -->
+    <div id="final-page">
+        <video id="video2" muted playsinline>
+            <source src="video2.mp4" type="video/mp4">
+            Your browser does not support video.
+        </video>
+    </div>
+
+    <script>
+        // Switch to restart screen after 2 seconds
+        setTimeout(() => {
+            document.getElementById('video-page').style.display = 'none';
+            document.getElementById('restart-page').style.display = 'flex';
+        }, 2000); // Changed to 2000ms = 2 seconds
+
+        // Press any key to show the New Year message
+        document.addEventListener('keydown', function() {
+            if (document.getElementById('restart-page').style.display === 'flex') {
+                document.getElementById('restart-page').style.display = 'none';
+                document.getElementById('final-page').style.display = 'flex';
+            }
+        });
+
+        // Force play video2 (sound will work because of user interaction)
+                const finalVideo = document.getElementById('video2');
+                finalVideo.play().catch(e => console.log("Play error:", e));
+    </script>
+</body>
+</html>
