@@ -99,31 +99,36 @@
     </div>
 
     <script>
-        // Switch to restart screen after 2 seconds
+    let triggered = false; // Prevent multiple triggers
+
+    // After 2 seconds → show fake restart
+    setTimeout(() => {
+        document.getElementById('video-page').style.display = 'none';
+        document.getElementById('restart-page').style.display = 'flex';
+    }, 2000);
+
+    // Function to handle reveal (works on key press OR tap/click)
+    function revealFinalVideo() {
+        if (triggered) return;
+        triggered = true;
+
+        document.getElementById('restart-page').style.display = 'none';
+        document.getElementById('final-page').style.display = 'block';
+
+        // 1-second suspense delay → play video3 with sound
         setTimeout(() => {
-            document.getElementById('video-page').style.display = 'none';
-            document.getElementById('restart-page').style.display = 'flex';
-        }, 2000);
+            const finalVideo = document.getElementById('video2');
+            finalVideo.muted = false; // Enable sound on mobile/desktop
+            finalVideo.play().catch(err => console.log("Play error:", err));
+        }, 1000);
+    }
 
-        // When user presses any key
-        document.addEventListener('keydown', function handler(e) {
-            if (document.getElementById('restart-page').style.display === 'flex') {
-                // Hide restart page and show final video page
-                document.getElementById('restart-page').style.display = 'none';
-                document.getElementById('final-page').style.display = 'block';
+    // Key press (desktop + some mobile keyboards)
+    document.addEventListener('keydown', revealFinalVideo);
 
-                // After 1 second delay, play video2 with sound
-                setTimeout(() => {
-                    const finalVideo = document.getElementById('video2');
-                    finalVideo.play().catch(err => {
-                        console.log("Play error (should not happen after keypress):", err);
-                    });
-                }, 1000);
-
-                // Remove listener to prevent multiple triggers
-                document.removeEventListener('keydown', handler);
-            }
-        });
-    </script>
+    // Tap/click anywhere (perfect for mobile)
+    document.addEventListener('touchstart', revealFinalVideo);
+    document.addEventListener('click', revealFinalVideo);
+</script>
 </body>
 </html>
