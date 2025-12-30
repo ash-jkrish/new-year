@@ -56,45 +56,7 @@
             max-width: 800px;
         }
 
-        /* Final Happy New Year Page */
-        #final-page {
-            display: none;
-            background: linear-gradient(to bottom, #0f001f, #000428);
-            color: gold;
-            height: 100%;
-            width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 40px;
-            box-sizing: border-box;
-        }
-        #final-page h1 {
-            font-size: 6em;
-            margin: 0;
-            text-shadow: 0 0 30px gold, 0 0 50px orange;
-            animation: glow 6s infinite alternate;
-        }
-        #final-page .emojis {
-            font-size: 4em;
-            margin: 30px 0;
-        }
-        #final-page .success-msg {
-            font-size: 2.8em;
-            font-weight: bold;
-            color: #ffeb3b;
-            text-shadow: 0 0 20px #fff;
-        }
-        #final-page p {
-            font-size: 2.2em;
-            margin: 20px;
-            max-width: 900px;
-        }
-/* Final Video Page - Pure video only */
+        /* Final Video Page - Pure video only */
         #final-page {
             display: none;
             height: 100vh;
@@ -108,17 +70,13 @@
             height: 100%;
             object-fit: cover;
         }
-        @keyframes glow {
-            from { text-shadow: 0 0 20px gold; }
-            to { text-shadow: 0 0 60px orange, 0 0 80px red; }
-        }
     </style>
 </head>
 <body>
 
-    <!-- Your Video: video1.mp4 plays immediately -->
+    <!-- First Video: video1.mp4 plays immediately (muted) -->
     <div id="video-page">
-        <video id="glitter-video" autoplay muted playsinline>
+        <video id="glitter-video" autoplay muted playsinline loop>
             <source src="video1.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -133,9 +91,9 @@
         <p><strong>Press any key to continue...</strong></p>
     </div>
 
-    <!-- Final Reveal: Pure video2.mp4 -->
+    <!-- Final Reveal: Pure video2.mp4 (now with sound!) -->
     <div id="final-page">
-        <video id="video2" muted playsinline>
+        <video id="video2" playsinline loop>
             <source src="video2.mp4" type="video/mp4">
             Your browser does not support video.
         </video>
@@ -146,19 +104,27 @@
         setTimeout(() => {
             document.getElementById('video-page').style.display = 'none';
             document.getElementById('restart-page').style.display = 'flex';
-        }, 2000); // Changed to 2000ms = 2 seconds
+        }, 2000);
 
-        // Press any key to show the New Year message
-        document.addEventListener('keydown', function() {
+        // When user presses any key
+        document.addEventListener('keydown', function handler(e) {
             if (document.getElementById('restart-page').style.display === 'flex') {
+                // Hide restart page and show final video page
                 document.getElementById('restart-page').style.display = 'none';
-                document.getElementById('final-page').style.display = 'flex';
+                document.getElementById('final-page').style.display = 'block';
+
+                // After 1 second delay, play video2 with sound
+                setTimeout(() => {
+                    const finalVideo = document.getElementById('video2');
+                    finalVideo.play().catch(err => {
+                        console.log("Play error (should not happen after keypress):", err);
+                    });
+                }, 1000);
+
+                // Remove listener to prevent multiple triggers
+                document.removeEventListener('keydown', handler);
             }
         });
-
-        // Force play video2 (sound will work because of user interaction)
-                const finalVideo = document.getElementById('video2');
-                finalVideo.play().catch(e => console.log("Play error:", e));
     </script>
 </body>
 </html>
